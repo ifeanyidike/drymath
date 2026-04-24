@@ -270,12 +270,12 @@ export default async function HomePage() {
                 Quality Service You Can Trust
               </h2>
               <p className="text-slate-600 max-w-2xl mx-auto">
-                We're committed to delivering the best laundry experience possible.
+                We&apos;re committed to delivering the best laundry experience possible.
               </p>
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {features.map((feature, index) => (
+              {features.map((feature) => (
                 <div
                   key={feature.title}
                   className="group p-6 rounded-2xl bg-slate-50 hover:bg-green-50 border border-transparent hover:border-green-200 transition-all duration-300 card-hover"

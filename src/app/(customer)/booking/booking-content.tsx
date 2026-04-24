@@ -19,7 +19,7 @@ interface BookingContentProps {
 
 export function BookingContent({ addresses, timeSlots }: BookingContentProps) {
   const router = useRouter()
-  const { items, subtotal, clearCart } = useCart()
+  const { items, subtotal } = useCart()
 
   const [selectedAddressId, setSelectedAddressId] = useState<string>(
     addresses.find(a => a.isDefault)?.id || addresses[0]?.id || ''
@@ -35,6 +35,7 @@ export function BookingContent({ addresses, timeSlots }: BookingContentProps) {
   // Reset delivery date if it's before the new minimum
   useEffect(() => {
     if (deliveryDate && pickupDate && deliveryDate < minDeliveryDate) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDeliveryDate(null)
       setDeliverySlot(null)
     }

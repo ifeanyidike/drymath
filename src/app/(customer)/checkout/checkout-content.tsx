@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { Button } from '@/components/ui'
@@ -23,7 +22,6 @@ interface BookingData {
 }
 
 export function CheckoutContent({ user }: CheckoutContentProps) {
-  const router = useRouter()
   const { items, subtotal, clearCart } = useCart()
   const [booking, setBooking] = useState<BookingData | null>(null)
   const [notes, setNotes] = useState('')
@@ -35,6 +33,7 @@ export function CheckoutContent({ user }: CheckoutContentProps) {
   useEffect(() => {
     const stored = sessionStorage.getItem('booking')
     if (stored) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setBooking(JSON.parse(stored))
     }
   }, [])
@@ -84,7 +83,7 @@ export function CheckoutContent({ user }: CheckoutContentProps) {
       items: items.map(item => ({
         serviceItemId: item.serviceItem.id,
         quantity: item.quantity,
-        unitPrice: Number(item.serviceItem.price),
+        unitPrice: item.serviceItem.price,
       })),
       notes,
       specialInstructions,
@@ -123,7 +122,7 @@ export function CheckoutContent({ user }: CheckoutContentProps) {
 
       // Redirect to Paystack
       window.location.href = data.authorization_url
-    } catch (err) {
+    } catch {
       setError('Failed to initialize payment')
       setIsLoading(false)
     }
@@ -159,11 +158,11 @@ export function CheckoutContent({ user }: CheckoutContentProps) {
                     <div>
                       <p className="text-sm font-medium text-slate-900">{item.serviceItem.name}</p>
                       <p className="text-xs text-slate-500">
-                        {formatCurrency(item.serviceItem.price.toString())} x {item.quantity}
+                        {formatCurrency(item.serviceItem.price)} x {item.quantity}
                       </p>
                     </div>
                     <p className="text-sm font-medium text-slate-900">
-                      {formatCurrency(Number(item.serviceItem.price) * item.quantity)}
+                      {formatCurrency(item.serviceItem.price * item.quantity)}
                     </p>
                   </div>
                 ))}

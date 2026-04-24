@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { format } from 'date-fns'
 import { getCurrentUser } from '@/actions/auth'
 import { getOrder } from '@/actions/orders'
-import { Button } from '@/components/ui'
 import { formatCurrency, getStatusLabel, getStatusColor } from '@/lib/utils'
 import { OrderStatus } from '@prisma/client'
 

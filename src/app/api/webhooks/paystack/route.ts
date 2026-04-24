@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { validateWebhookSignature } from '@/lib/paystack'
 import { updatePaymentStatus } from '@/actions/orders'
 import { PaymentStatus } from '@prisma/client'
-import prisma from '@/lib/prisma'
 
 export async function POST(request: NextRequest) {
   try {

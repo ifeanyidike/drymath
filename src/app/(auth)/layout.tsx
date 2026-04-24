@@ -75,7 +75,7 @@ export default function AuthLayout({
               ))}
             </div>
             <p className="text-slate-300 text-sm leading-relaxed">
-              "DryMath has made laundry day stress-free. The pickup and delivery is so convenient, and my clothes always come back perfectly clean."
+              &ldquo;DryMath has made laundry day stress-free. The pickup and delivery is so convenient, and my clothes always come back perfectly clean.&rdquo;
             </p>
             <div className="flex items-center gap-3 mt-4">
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white font-semibold text-sm">

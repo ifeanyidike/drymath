@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { ServiceItemCard } from '@/components/services/service-item-card'
 import { CartSummary } from '@/components/cart/cart-summary'
-import { useCart } from '@/contexts/cart-context'
 import { Service, ServiceItem } from '@prisma/client'
 import { cn } from '@/lib/utils'
 
-type ServiceWithItems = Service & { items: ServiceItem[] }
+type SerializedServiceItem = Omit<ServiceItem, 'price'> & { price: number }
+type ServiceWithItems = Service & { items: SerializedServiceItem[] }
 
 interface ServicesContentProps {
   services: ServiceWithItems[]
@@ -16,12 +16,12 @@ interface ServicesContentProps {
 
 export function ServicesContent({ services }: ServicesContentProps) {
   const searchParams = useSearchParams()
-  const { serviceId: cartServiceId } = useCart()
   const [activeTab, setActiveTab] = useState<string>(services[0]?.slug || '')
 
   useEffect(() => {
     const serviceParam = searchParams.get('service')
     if (serviceParam && services.some(s => s.slug === serviceParam)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveTab(serviceParam)
     }
   }, [searchParams, services])
@@ -72,7 +72,6 @@ export function ServicesContent({ services }: ServicesContentProps) {
                   <ServiceItemCard
                     key={item.id}
                     item={item}
-                    currentServiceId={cartServiceId}
                   />
                 ))}
               </div>

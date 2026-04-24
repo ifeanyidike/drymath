@@ -1,16 +1,14 @@
 'use client'
 
 import { Button } from '@/components/ui'
-import { useCart } from '@/contexts/cart-context'
-import { ServiceItem } from '@prisma/client'
+import { useCart, type CartServiceItem } from '@/contexts/cart-context'
 import { formatCurrency } from '@/lib/utils'
 
 interface ServiceItemCardProps {
-  item: ServiceItem
-  currentServiceId: string | null
+  item: CartServiceItem
 }
 
-export function ServiceItemCard({ item, currentServiceId }: ServiceItemCardProps) {
+export function ServiceItemCard({ item }: ServiceItemCardProps) {
   const { addItem, removeItem, updateQuantity, getItemQuantity, serviceId } = useCart()
 
   const quantity = getItemQuantity(item.id)
@@ -43,7 +41,7 @@ export function ServiceItemCard({ item, currentServiceId }: ServiceItemCardProps
         <div className="flex items-baseline gap-2">
           <span className="text-sm font-medium text-slate-900">{item.name}</span>
           <span className="text-sm text-slate-500">
-            {formatCurrency(item.price.toString())}
+            {formatCurrency(item.price)}
           </span>
         </div>
         {item.description && (

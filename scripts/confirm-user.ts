@@ -40,7 +40,7 @@ async function confirmUser() {
   }
 
   // Update user to confirm email
-  const { data, error } = await supabase.auth.admin.updateUserById(user.id, {
+  const { error } = await supabase.auth.admin.updateUserById(user.id, {
     email_confirm: true,
   })
 

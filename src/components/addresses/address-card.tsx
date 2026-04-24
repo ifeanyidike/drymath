@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@/components/ui'
 import { deleteAddress, setDefaultAddress } from '@/actions/addresses'
 import { Address } from '@prisma/client'
 

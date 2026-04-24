@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Button, Input } from '@/components/ui'
+import { Button } from '@/components/ui'
 import { login } from '@/actions/auth'
 
 export function LoginForm() {

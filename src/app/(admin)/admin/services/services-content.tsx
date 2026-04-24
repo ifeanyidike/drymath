@@ -14,14 +14,15 @@ import {
 import { formatCurrency } from '@/lib/utils'
 import { Service, ServiceItem } from '@prisma/client'
 
-type ServiceWithItems = Service & { items: ServiceItem[] }
+type SerializedServiceItem = Omit<ServiceItem, 'price'> & { price: number }
+type ServiceWithItems = Service & { items: SerializedServiceItem[] }
 
 interface ServicesContentProps {
   services: ServiceWithItems[]
 }
 
 export function ServicesContent({ services: initialServices }: ServicesContentProps) {
-  const [services, setServices] = useState(initialServices)
+  const [services] = useState(initialServices)
   const [isLoading, setIsLoading] = useState(false)
   const [showAddService, setShowAddService] = useState(false)
   const [showAddItem, setShowAddItem] = useState<string | null>(null)

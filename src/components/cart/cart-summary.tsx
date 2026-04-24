@@ -46,7 +46,7 @@ export function CartSummary() {
                 {item.serviceItem.name}
               </p>
               <p className="text-xs text-slate-500">
-                {formatCurrency(item.serviceItem.price.toString())} x {item.quantity}
+                {formatCurrency(item.serviceItem.price)} x {item.quantity}
               </p>
             </div>
             <div className="flex items-center gap-2">

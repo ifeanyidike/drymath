@@ -3,15 +3,17 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 import { ServiceItem } from '@prisma/client'
 
+export type CartServiceItem = Omit<ServiceItem, 'price'> & { price: number }
+
 export interface CartItem {
-  serviceItem: ServiceItem
+  serviceItem: CartServiceItem
   quantity: number
 }
 
 interface CartContextType {
   items: CartItem[]
   serviceId: string | null
-  addItem: (item: ServiceItem) => void
+  addItem: (item: CartServiceItem) => void
   removeItem: (itemId: string) => void
   updateQuantity: (itemId: string, quantity: number) => void
   clearCart: () => void
@@ -35,6 +37,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     if (stored) {
       try {
         const parsed = JSON.parse(stored)
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setItems(parsed.items || [])
         setServiceId(parsed.serviceId || null)
       } catch (e) {
@@ -51,7 +54,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [items, serviceId, isLoaded])
 
-  function addItem(serviceItem: ServiceItem) {
+  function addItem(serviceItem: CartServiceItem) {
     setItems((prevItems) => {
       // Check if item already exists
       const existingIndex = prevItems.findIndex(
@@ -114,7 +117,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0)
 
   const subtotal = items.reduce(
-    (sum, item) => sum + Number(item.serviceItem.price) * item.quantity,
+    (sum, item) => sum + item.serviceItem.price * item.quantity,
     0
   )
 
