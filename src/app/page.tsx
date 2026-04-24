@@ -6,18 +6,11 @@ import { getCurrentUser } from '@/actions/auth'
 import prisma from '@/lib/prisma'
 import { formatCurrency } from '@/lib/utils'
 
-export default async function HomePage() {
-  let user = null
-  let servicesData: Awaited<ReturnType<typeof prisma.service.findMany>> = []
+export const dynamic = 'force-dynamic'
 
+async function getHomepageServices() {
   try {
-    user = await getCurrentUser()
-  } catch (err) {
-    console.error('HomePage: getCurrentUser failed', err)
-  }
-
-  try {
-    servicesData = await prisma.service.findMany({
+    return await prisma.service.findMany({
       where: { isActive: true },
       orderBy: { sortOrder: 'asc' },
       include: {
@@ -30,7 +23,19 @@ export default async function HomePage() {
     })
   } catch (err) {
     console.error('HomePage: prisma.service.findMany failed', err)
+    return []
   }
+}
+
+export default async function HomePage() {
+  let user = null
+  try {
+    user = await getCurrentUser()
+  } catch (err) {
+    console.error('HomePage: getCurrentUser failed', err)
+  }
+
+  const servicesData = await getHomepageServices()
 
   // Serialize Decimal to number to avoid serialization errors
   const services = servicesData.map(service => ({
