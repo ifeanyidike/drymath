@@ -7,19 +7,30 @@ import prisma from '@/lib/prisma'
 import { formatCurrency } from '@/lib/utils'
 
 export default async function HomePage() {
-  const user = await getCurrentUser()
+  let user = null
+  let servicesData: Awaited<ReturnType<typeof prisma.service.findMany>> = []
 
-  const servicesData = await prisma.service.findMany({
-    where: { isActive: true },
-    orderBy: { sortOrder: 'asc' },
-    include: {
-      items: {
-        where: { isActive: true },
-        orderBy: { sortOrder: 'asc' },
-        take: 6,
+  try {
+    user = await getCurrentUser()
+  } catch (err) {
+    console.error('HomePage: getCurrentUser failed', err)
+  }
+
+  try {
+    servicesData = await prisma.service.findMany({
+      where: { isActive: true },
+      orderBy: { sortOrder: 'asc' },
+      include: {
+        items: {
+          where: { isActive: true },
+          orderBy: { sortOrder: 'asc' },
+          take: 6,
+        },
       },
-    },
-  })
+    })
+  } catch (err) {
+    console.error('HomePage: prisma.service.findMany failed', err)
+  }
 
   // Serialize Decimal to number to avoid serialization errors
   const services = servicesData.map(service => ({
